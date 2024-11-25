@@ -1,0 +1,10 @@
+services:
+  jupyter-lab:
+    container_name: jupyter-lab
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "8888:8888"
+    environment:
+      JUPYTER_ENABLE_LAB: "yes"
