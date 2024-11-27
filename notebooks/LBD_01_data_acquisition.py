@@ -446,37 +446,3 @@ def load_data_from_pubmed(search_str: str, min_date: str, max_date: str, domain_
     return lines
 
 
-# In[10]:
-
-
-import logging
-
-# Initialize logging with a basic configuration
-logging.basicConfig(level=logging.INFO,
-                    format='%(asctime)s: %(levelname)s - %(message)s',
-                    datefmt='%Y-%m-%d %H:%M:%S')
-
-
-# In[11]:
-
-
-import itertools
-
-#lines = load_data_from_pubmed('migraine[tiab] AND magnesium[tiab]', '1988/01/01', '1988/12/31', 'mig_mag')
-#print(len(lines))
-#lines[:7]
-#dict(itertools.islice(lines.items(), 7))
-#lines
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
