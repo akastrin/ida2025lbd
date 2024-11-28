@@ -6,7 +6,7 @@
 # This module provides visualization functions to help users better understand the results.
 # 
 
-# In[1]:
+# In[ ]:
 
 
 from typing import List, Optional
@@ -41,7 +41,7 @@ import random
 # 
 # 
 
-# In[2]:
+# In[ ]:
 
 
 def plot_wordcloud(text: str, max_words: int = 100, title: Optional[str] = None):
@@ -87,7 +87,7 @@ def plot_wordcloud(text: str, max_words: int = 100, title: Optional[str] = None)
 # 
 # 
 
-# In[3]:
+# In[ ]:
 
 
 def plot_sentiment_histogram(sentiment_scores: List[float], bins: int = 20, title: Optional[str] = None):
@@ -136,7 +136,7 @@ def plot_sentiment_histogram(sentiment_scores: List[float], bins: int = 20, titl
 # 
 # 
 
-# In[4]:
+# In[ ]:
 
 
 def plot_clusters_2d(matrix: csr_matrix, clustering_model: BaseEstimator, title: Optional[str] = None):
@@ -183,7 +183,7 @@ def plot_clusters_2d(matrix: csr_matrix, clustering_model: BaseEstimator, title:
 
 # Plot *bow* and *tfidf* matrix.
 
-# In[5]:
+# In[ ]:
 
 
 def plot_bow_tfidf_matrix(title: str, any_matrix: np.ndarray, ids: List, words: List, as_int = True):
@@ -262,7 +262,7 @@ def plot_bow_tfidf_matrix(title: str, any_matrix: np.ndarray, ids: List, words: 
 # In[ ]:
 
 
-def visualize_tfidf_pca_interactive(names, domains_list, tfidf_matrix, transpose = False):
+def visualize_tfidf_pca_interactive_obsolete(names, domains_list, tfidf_matrix, transpose = False):
     tfidf_matrix_transposed = np.squeeze(np.asarray(tfidf_matrix))
     if transpose:
         tfidf_matrix_transposed = tfidf_matrix_transposed.T
@@ -323,4 +323,212 @@ def visualize_tfidf_pca_interactive(names, domains_list, tfidf_matrix, transpose
                       height=1100)  # Set the height of the figure
     
     fig.show()
+
+
+# In[ ]:
+
+
+def visualize_tfidf_pca_interactive(names, domains_list, tfidf_matrix, transpose = False, color_schema = 0):
+    tfidf_matrix_transposed = np.squeeze(np.asarray(tfidf_matrix))
+    if transpose:
+        tfidf_matrix_transposed = tfidf_matrix_transposed.T
+
+    # Apply PCA
+    pca = PCA(n_components=2)
+    pca_result = pca.fit_transform(tfidf_matrix_transposed)
+ 
+    # Generate colors for each point
+    if color_schema == 0:
+        colors = ['rgba(242, 69, 69, 0.2)', 'rgba(245, 233, 67, 0.2)', 'rgba(78, 222, 232, 0.2)', 'rgba(145, 232, 78, 0.2)',
+                  'rgba(229, 2, 199, 0.2)', 'rgba(229, 145, 2, 0.2)', 'rgba(2, 229, 32, 0.2)', 'rgba(2, 85, 229, 0.2)']
+        colors_centroid = ['rgba(242, 69, 69, 0.9)', 'rgba(245, 233, 67, 0.9)', 'rgba(78, 222, 232, 0.9)', 'rgba(145, 232, 78, 0.9)',
+                    'rgba(229, 2, 199, 0.9)', 'rgba(229, 145, 2, 0.9)', 'rgba(2, 229, 32, 0.9)', 'rgba(2, 85, 229, 0.9)']
+    elif color_schema == 1:
+        colors = ['rgba(229, 2, 199, 0.2)', 'rgba(229, 145, 2, 0.2)', 'rgba(2, 229, 32, 0.2)', 'rgba(2, 85, 229, 0.2)',
+                  'rgba(242, 69, 69, 0.2)', 'rgba(245, 233, 67, 0.2)', 'rgba(78, 222, 232, 0.2)', 'rgba(145, 232, 78, 0.2)']
+        colors_centroid = ['rgba(229, 2, 199, 0.9)', 'rgba(229, 145, 2, 0.9)', 'rgba(2, 229, 32, 0.9)', 'rgba(2, 85, 229, 0.9)',
+                    'rgba(242, 69, 69, 0.9)', 'rgba(245, 233, 67, 0.9)', 'rgba(78, 222, 232, 0.9)', 'rgba(145, 232, 78, 0.9)']
+    elif color_schema == 2:
+        colors = ['rgba(2, 229, 32, 0.2)', 'rgba(2, 85, 229, 0.2)', 'rgba(229, 2, 199, 0.2)', 'rgba(229, 145, 2, 0.2)', 
+                  'rgba(242, 69, 69, 0.2)', 'rgba(245, 233, 67, 0.2)', 'rgba(78, 222, 232, 0.2)', 'rgba(145, 232, 78, 0.2)']
+        colors_centroid = ['rgba(2, 229, 32, 0.9)', 'rgba(2, 85, 229, 0.9)', 'rgba(229, 2, 199, 0.9)', 'rgba(229, 145, 2, 0.9)', 
+                    'rgba(242, 69, 69, 0.9)', 'rgba(245, 233, 67, 0.9)', 'rgba(78, 222, 232, 0.9)', 'rgba(145, 232, 78, 0.9)']
+    elif color_schema == 11:
+        colors = ['rgba(255, 0, 0, 0.2)', 'rgba(0, 0, 255, 0.2)']
+        colors_centroid = ['rgba(255, 0, 0, 0.9)', 'rgba(0, 0, 255, 0.9)']
+    elif color_schema == 12:
+        colors = ['rgba(255, 153, 153, 0.2)', 'rgba(153, 153, 255, 0.2)']
+        colors_centroid = ['rgba(255, 153, 153, 0.9)', 'rgba(153, 153, 255, 0.9)']
+    elif color_schema == 13:
+        colors = ['rgba(255, 0, 0, 0.2)', 'rgba(255, 128, 0, 0.2)', 'rgba(0, 0, 255, 0.2)', 'rgba(128, 0, 255, 0.2)']
+        colors_centroid = ['rgba(255, 0, 0, 0.9)', 'rgba(255, 128, 0, 0.9)', 'rgba(0, 0, 255, 0.9)', 'rgba(128, 0, 255, 0.9)']
+    else:
+        colors = ['red', 'green', 'blue', 'yellow', 'black', 'grey', 'violet', 'brown', 'lime', 'cyan']
+
+    # Determine unique clusters
+    unique_clusters = list(set(domains_list))
+    unique_clusters.sort()
+    
+    # Compute the centroid of the PCA result
+    centroid = pca_result.mean(axis=0)
+    
+    # Create interactive plot
+    fig = go.Figure()
+
+    # PCA Scatter plot with random colors
+    for cluster_num in range(len(unique_clusters)):
+        cluster_docs_indices = [i for i, label in enumerate(domains_list) if label == unique_clusters[cluster_num]]
+
+        # Compute centroid for the current cluster
+        centroid_x = np.mean(pca_result[cluster_docs_indices, 0])
+        centroid_y = np.mean(pca_result[cluster_docs_indices, 1])
+
+        fig.add_trace(go.Scatter(x=pca_result[cluster_docs_indices, 0], y=pca_result[cluster_docs_indices, 1], 
+                                 mode='markers+text',
+                                 # marker=dict(size=8, color=colors[cluster_num]), # , color=colors[cluster_num]
+                                 marker=dict(size=8, color=colors[cluster_num], symbol='circle', line=dict(color='rgba(0, 0, 0, 0.1)', width=1)), 
+                                 name=unique_clusters[cluster_num],
+                                 hovertext=[names[i] for i in cluster_docs_indices], # this text is shown on hover
+                                 text='', # [names[i] for i in cluster_docs_indices], # this text is set to show always
+                                 textposition='bottom center'))
+
+        # Plot the centroid of the current cluster
+        fig.add_trace(go.Scatter(x=[centroid_x], y=[centroid_y],
+                                 mode='markers+text',
+                                 marker=dict(size=16, color=colors_centroid[cluster_num], symbol='star', line=dict(color='rgba(0, 0, 0, 0.5)', width=2)),
+                                 name='Centroid ' + unique_clusters[cluster_num],
+                                 hovertext='Centroid of ' + unique_clusters[cluster_num],
+                                 text=unique_clusters[cluster_num],
+                                 textposition='bottom center'))
+
+    # Plot the centroid of the whole set of documents
+    fig.add_trace(go.Scatter(x=[centroid[0]], y=[centroid[1]],
+                             mode='markers',
+                             marker=dict(size=20, color='black', symbol='cross'),
+                             name='The main centroid',
+                             hovertext=['The main centroid']))
+
+    fig.update_layout(title="PCA Visualization of TF-IDF Vectors",
+                      hovermode='closest',
+                      showlegend=True,
+                      width=1100,  # Set the width of the figure
+                      height=1100)  # Set the height of the figure
+    
+    fig.show()
+
+
+# Experimental part, will be removed in the final version.
+
+# In[ ]:
+
+
+import colorsys
+
+def sort_colors_by_similarity(rgb_colors):
+    """
+    Sorts a list of RGB colors so that similar colors are grouped closer together.
+    
+    Args:
+        rgb_colors (list of tuples): List of colors in RGB format [(R, G, B), ...]
+        
+    Returns:
+        sorted_rgb_colors (list of tuples): List of colors sorted by hue, saturation, and lightness
+    """
+    # Convert each RGB color to HSL
+    hsl_colors = [
+        (*colorsys.rgb_to_hls(r/255, g/255, b/255), (r, g, b))  # Store HSL and original RGB
+        for (r, g, b) in rgb_colors
+    ]
+
+    # Sort by hue, then saturation, and lightness (optional)
+    hsl_colors.sort(key=lambda color: (color[0], color[1], color[2]))
+
+    # Extract sorted RGB colors
+    sorted_rgb_colors = [color[3] for color in hsl_colors]
+    return sorted_rgb_colors
+
+# Example RGB colors
+rgb_colors = [
+    (255, 0, 0),   # Red
+    (0, 255, 0),   # Green
+    (0, 0, 255),   # Blue
+    (255, 255, 0), # Yellow
+    (255, 165, 0), # Orange
+    (128, 0, 128), # Purple
+
+    (255, 255, 255), # White
+    (0, 0, 0), # Black
+    (128, 128, 128), # Gray
+    (128, 0, 128), # Brown
+    (196, 164, 132), # Silver
+    (128, 128, 0), # Olive
+]
+
+sorted_colors = sort_colors_by_similarity(rgb_colors)
+print("Sorted RGB Colors by Similarity:", sorted_colors)
+
+
+# In[ ]:
+
+
+def contrast_ratio(rgb1, rgb2):
+    def relative_luminance(rgb):
+        r, g, b = [x / 255.0 for x in rgb]
+        r = r / 12.92 if r <= 0.03928 else ((r + 0.055) / 1.055) ** 2.4
+        g = g / 12.92 if g <= 0.03928 else ((g + 0.055) / 1.055) ** 2.4
+        b = b / 12.92 if b <= 0.03928 else ((b + 0.055) / 1.055) ** 2.4
+        return 0.2126 * r + 0.7152 * g + 0.0722 * b
+
+    lum1 = relative_luminance(rgb1)
+    lum2 = relative_luminance(rgb2)
+    lighter = max(lum1, lum2)
+    darker = min(lum1, lum2)
+    return (lighter + 0.05) / (darker + 0.05)
+
+# Example usage
+color1 = (255, 0, 0)  # Red
+color2 = (0, 255, 0)  # Green
+print("Contrast Ratio:", contrast_ratio(color1, color2))
+
+
+color1 = (255, 255, 255)  # White
+color2 = (0, 0, 0)  # Black
+print("Contrast Ratio:", contrast_ratio(color1, color2))
+
+color1 = (255, 0, 0)  # Red
+color2 = (255, 255, 0)  # Yellow
+print("Contrast Ratio:", contrast_ratio(color1, color2))
+
+color1 = (255, 0, 0)  # Red
+color2 = (255, 165, 0)  # Orange
+print("Contrast Ratio:", contrast_ratio(color1, color2))
+
+color1 = (255, 0, 0)  # Red
+color2 = (230, 0, 0)  # Red
+print("Contrast Ratio:", contrast_ratio(color1, color2))
+
+
+# In[ ]:
+
+
+from itertools import combinations
+
+def average_pairwise_contrast(colors):
+    pairwise_contrasts = [
+        contrast_ratio(colors[i], colors[j])
+        for i, j in combinations(range(len(colors)), 2)
+    ]
+    return sum(pairwise_contrasts) / len(pairwise_contrasts), min(pairwise_contrasts)
+
+# Example usage with three colors
+colors = [(255, 0, 0), (0, 255, 0), (0, 0, 255)]  # Red, Green, Blue
+avg_contrast, min_contrast = average_pairwise_contrast(colors)
+print("Average Pairwise Contrast:", avg_contrast)
+print("Minimum Pairwise Contrast:", min_contrast)
+
+
+# In[ ]:
+
+
+
 

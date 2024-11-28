@@ -1,15 +1,20 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# <a href="https://colab.research.google.com/" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>&nbsp; TODO: chech the possibility for porting and activating the link</a>
-# 
 # # 1. Module for data acquisition
 # 
 # This module is responsible for capturing and loading text data from various sources such as text files, CSV files or APIs.
 
 # Import python libraries:
 
-# In[2]:
+# In[ ]:
+
+
+# <a href="https://colab.research.google.com/" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+# &nbsp; TODO: chech the possibility for porting and activating the link</a>
+
+
+# In[ ]:
 
 
 import os
@@ -71,7 +76,7 @@ import logging
 # - *File encoding*: The function currently opens the file with the default system encoding. If you're working with files in different encodings (like UTF-8), you may need to adjust the `open` function to handle these encodings explicitly.
 # - *Error handling*: The function raises an error if the file does not exist.
 
-# In[3]:
+# In[ ]:
 
 
 def load_data_from_file(file_path: str) -> List[str]:
@@ -127,7 +132,7 @@ def load_data_from_file(file_path: str) -> List[str]:
 #   
 # - *Use cases for ASCII encoding*: While ASCII encoding is widely supported, it is limited in terms of characters that can be displayed. For text data containing international characters, other encodings such as UTF-8 are more suitable unless you have certain restrictions that require ASCII.
 
-# In[4]:
+# In[ ]:
 
 
 def convert_file_to_ascii_encoding(input_filename: str, output_filename: str) -> None:
@@ -138,7 +143,7 @@ def convert_file_to_ascii_encoding(input_filename: str, output_filename: str) ->
     - input_filename (str): The name of the file to be read.
     - output_filename (str): The name of the file where the ASCII-encoded content should be saved.
     """
-    with open(input_filename, 'r') as file:
+    with open(input_filename, 'r', encoding='utf-8', errors='ignore') as file:
         contents = file.read()
 
     # Convert to ASCII and handle non-ASCII characters using 'replace' error strategy
@@ -182,7 +187,7 @@ def convert_file_to_ascii_encoding(input_filename: str, output_filename: str) ->
 # 
 # - *Data types*: This function is specifically designed for loading text data. If the column contains other data types (e.g., numeric or mixed types), further processing might be required.
 
-# In[5]:
+# In[ ]:
 
 
 def load_data_from_csv(file_path: str, column_name: str) -> List[str]:
@@ -243,7 +248,7 @@ def load_data_from_csv(file_path: str, column_name: str) -> List[str]:
 # 
 # To use this function, simply enter the URL of the web page from which you want to retrieve data. The function will return a list of strings, each representing a section of text from the page. This data can then be further processed for your specific analysis requirements.
 
-# In[6]:
+# In[ ]:
 
 
 def load_data_from_web(url: str) -> List[str]:
@@ -270,7 +275,7 @@ def load_data_from_web(url: str) -> List[str]:
 # 
 # Define the URL and the parameters to be used for retrieving articles from PubMed. Define the class `PubMedArticleRetriever` for searching (function `esearch`) and retrieving (function `efetch`) articles from PubMed.
 
-# In[7]:
+# In[ ]:
 
 
 # Base URL
@@ -315,7 +320,6 @@ class PubMedArticleRetriever():
         chunk_lst = [pmid_lst[x : x + chunk_size] for x in range(0, len(pmid_lst), chunk_size)]
         res_lst = []
         for i, chunk in enumerate(chunk_lst, start=1):
-            #print(f'Fetching chunk: {i}/{len(chunk_lst)}')
             logging.info(f'Fetching {chunk_size} articles of chunk: {i}/{len(chunk_lst)}')
             pmid_str = ','.join(pmid for pmid in chunk)
             params = {'db': 'pubmed',
@@ -343,7 +347,7 @@ class PubMedArticleRetriever():
 # 
 # To use this function, pass a dictionary in which each entry contains relevant document details, along with a string for the domain name. The function returns a list of formatted strings, each representing an entry in the dictionary. This output can then be used for further processing, storage or analysis.
 
-# In[8]:
+# In[ ]:
 
 
 def convert_dict_to_list(dictionary: Dict[str, Any], domain_name: str) -> List[str]:
@@ -401,7 +405,7 @@ def convert_dict_to_list(dictionary: Dict[str, Any], domain_name: str) -> List[s
 # lines = load_data_from_pubmed('migraine[tiab] AND magnesium[tiab]', '1988/01/01', '1988/12/31', 'mig_mag')
 # ```
 
-# In[9]:
+# In[ ]:
 
 
 def load_data_from_pubmed(search_str: str, min_date: str, max_date: str, domain_name: str) -> List[str]:
@@ -444,5 +448,10 @@ def load_data_from_pubmed(search_str: str, min_date: str, max_date: str, domain_
     lines = convert_dict_to_list(c_dct, domain_name)
 
     return lines
+
+
+# In[ ]:
+
+
 
 

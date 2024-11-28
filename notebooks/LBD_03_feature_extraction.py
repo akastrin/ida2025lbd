@@ -226,6 +226,7 @@ def create_tfidf(corpus: List[str], ngram_size=1, min_df=1) -> Tuple[List, np.nd
     # vectorizer = TfidfVectorizer(ngram_range=(1, ngram_size), min_df=min_df, stop_words='english')
 
     # Fit the vectorizer to the corpus and transform the corpus into a TF-IDF matrix
+    # tfidf_matrix = np.asarray(vectorizer.fit_transform(corpus))
     tfidf_matrix = vectorizer.fit_transform(corpus)
 
     # Return the vectorizer and the TF-IDF matrix as a tuple

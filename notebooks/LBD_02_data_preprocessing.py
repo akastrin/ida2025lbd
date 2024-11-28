@@ -490,15 +490,15 @@ def preprocess(corpus, keep_list, remove_list, mesh_word_list, \
 
     if min_word_length > 0:
         logging.info('Keeping only longer words (>= ' + str(min_word_length) + ' characters)...')
-        corpus = do_keep_only_longer_or_equal_length_words(corpus, min_word_length)
+        corpus = do_keep_only_longer_or_equal_length_words(corpus, min_word_length) # add keep_list
 
     if keep_only_nouns:
         logging.info('Keeping only nouns ...')
-        corpus = do_remove_non_nouns(corpus, keep_list)
+        corpus = do_remove_non_nouns(corpus, keep_list) # add keep_list
 
     if keep_only_mesh:
         logging.info('Keeping only selected MeSH terms ...')
-        corpus = do_remove_non_mesh(corpus, mesh_word_list)
+        corpus = do_remove_non_mesh(corpus, mesh_word_list) # add keep_list
 
     if stemming == True:
         logging.info('Stemming ...')
