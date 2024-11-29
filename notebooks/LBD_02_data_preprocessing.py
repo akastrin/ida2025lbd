@@ -47,6 +47,20 @@ strDocumentKey = 'document'
 strPreprocessedKey = 'preprocessed'
 strPreprocessedDefaultValue = ['NA']
 
+def truncate_with_ellipsis(string: str, length: int) -> str:
+    """
+    Truncate a string to a specified length and add ellipsis (...) if it's longer than the length.
+    
+    Parameters:
+    - string (str): the string to be truncated
+    - length (int): the maximum allowed length of the truncated string
+    
+    Returns:
+    - str: the truncated string with ellipsis (...) if truncation occurred
+    """
+    if len(string) > length:
+        return string[:length - 3] + '...'  # Adjust for the length of the ellipsis
+    return string
 
 # The fuction *construct_dict_from_list* is designed to process a list of documents *docs_list* and transform them into a structured dictionary format. Each document in the list is expected to potentially have an identifier *id:* and a domain *!domain* at the beginning, followed by the main content of the document. The procedure aims to extract these components and store them in a structured manner within a dictionary. The structure of the returned dictionary is the following:
 # <code>
