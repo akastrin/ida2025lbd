@@ -6,7 +6,7 @@
 # This module provides visualization functions to help users better understand the results.
 # 
 
-# In[ ]:
+# In[1]:
 
 
 from typing import List, Optional
@@ -41,7 +41,7 @@ import random
 # 
 # 
 
-# In[ ]:
+# In[2]:
 
 
 def plot_wordcloud(text: str, max_words: int = 100, title: Optional[str] = None):
@@ -87,7 +87,7 @@ def plot_wordcloud(text: str, max_words: int = 100, title: Optional[str] = None)
 # 
 # 
 
-# In[ ]:
+# In[3]:
 
 
 def plot_sentiment_histogram(sentiment_scores: List[float], bins: int = 20, title: Optional[str] = None):
@@ -136,7 +136,7 @@ def plot_sentiment_histogram(sentiment_scores: List[float], bins: int = 20, titl
 # 
 # 
 
-# In[ ]:
+# In[4]:
 
 
 def plot_clusters_2d(matrix: csr_matrix, clustering_model: BaseEstimator, title: Optional[str] = None):
@@ -183,7 +183,7 @@ def plot_clusters_2d(matrix: csr_matrix, clustering_model: BaseEstimator, title:
 
 # Plot *bow* and *tfidf* matrix.
 
-# In[ ]:
+# In[5]:
 
 
 def plot_bow_tfidf_matrix(title: str, any_matrix: np.ndarray, ids: List, words: List, as_int = True):
@@ -259,73 +259,7 @@ def plot_bow_tfidf_matrix(title: str, any_matrix: np.ndarray, ids: List, words: 
 # 
 # Pass the TF-IDF matrix, document names, and domain information to the function to generate an interactive PCA plot. This visualization tool is essential for gaining insights into document relationships and clustering within large text corpora.
 
-# In[ ]:
-
-
-def visualize_tfidf_pca_interactive_obsolete(names, domains_list, tfidf_matrix, transpose = False):
-    tfidf_matrix_transposed = np.squeeze(np.asarray(tfidf_matrix))
-    if transpose:
-        tfidf_matrix_transposed = tfidf_matrix_transposed.T
- 
-    # Apply PCA
-    pca = PCA(n_components=2)
-    pca_result = pca.fit_transform(tfidf_matrix_transposed)
- 
-    # Generate colors for each point
-    if True:
-        colors = ['red', 'orange', 'green', 'blue', 'yellow', 'grey', 'violet', 'brown', 'lime', 'cyan']*12
-    else:
-        colors = ['red', 'green', 'blue', 'yellow', 'black', 'grey', 'violet', 'brown', 'lime', 'cyan']*12
-
-    # Determine unique clusters
-    unique_clusters = list(set(domains_list))
-    
-    # Compute the centroid of the PCA result
-    centroid = pca_result.mean(axis=0)
-    
-    # Create interactive plot
-    fig = go.Figure()
-
-    # PCA Scatter plot with random colors
-    for cluster_num in range(len(unique_clusters)):
-        cluster_docs_indices = [i for i, label in enumerate(domains_list) if label == unique_clusters[cluster_num]]
-
-        # Compute centroid for the current cluster
-        centroid_x = np.mean(pca_result[cluster_docs_indices, 0])
-        centroid_y = np.mean(pca_result[cluster_docs_indices, 1])
-
-        fig.add_trace(go.Scatter(x=pca_result[cluster_docs_indices, 0], y=pca_result[cluster_docs_indices, 1], 
-                                 mode='markers+text',
-                                 marker=dict(size=8, color=colors[cluster_num]), # , color=colors[cluster_num]
-                                 name=unique_clusters[cluster_num],
-                                 hovertext=[names[i] for i in cluster_docs_indices], # this text is shown on hover
-                                 text='', # [names[i] for i in cluster_docs_indices], # this text is set to show always
-                                 textposition='bottom center'))
-
-        # Plot the centroid of the current cluster
-        fig.add_trace(go.Scatter(x=[centroid_x], y=[centroid_y],
-                                 mode='markers',
-                                 marker=dict(size=16, color=colors[cluster_num], symbol='star'),
-                                 name='Centroid ' + unique_clusters[cluster_num],
-                                 hovertext='Centroid of ' + unique_clusters[cluster_num]))
-
-    # Plot the centroid
-    fig.add_trace(go.Scatter(x=[centroid[0]], y=[centroid[1]],
-                             mode='markers',
-                             marker=dict(size=20, color='green', symbol='cross'),
-                             name='The main centroid',
-                             hovertext=['The main centroid']))
-
-    fig.update_layout(title="PCA Visualization of TF-IDF Vectors",
-                      hovermode='closest',
-                      showlegend=True,
-                      width=1100,  # Set the width of the figure
-                      height=1100)  # Set the height of the figure
-    
-    fig.show()
-
-
-# In[ ]:
+# In[7]:
 
 
 def visualize_tfidf_pca_interactive(names, domains_list, tfidf_matrix, transpose = False, color_schema = 0):
@@ -415,4 +349,10 @@ def visualize_tfidf_pca_interactive(names, domains_list, tfidf_matrix, transpose
                       height=1100)  # Set the height of the figure
     
     fig.show()
+
+
+# In[ ]:
+
+
+
 

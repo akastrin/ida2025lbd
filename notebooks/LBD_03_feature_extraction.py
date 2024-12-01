@@ -5,7 +5,7 @@
 # 
 # This module implements various feature extraction techniques like Bag of Words, TF-IDF, and word embeddings.
 
-# In[10]:
+# In[1]:
 
 
 import numpy as np
@@ -68,7 +68,7 @@ from typing import List, Tuple, Dict
 # 
 # The `create_bag_of_words` function is a simple yet powerful tool to transform text data into a structured numerical format. This transformation is a critical first step in many text mining and NLP tasks, enabling more advanced analysis and discovery processes. Whether you’re conducting sentiment analysis, categorizing documents, or exploring new hypotheses through Literature-Based Discovery, understanding and using the BoW model is essential.
 
-# In[11]:
+# In[2]:
 
 
 def create_bag_of_words(corpus: List[str], ngram_size=1, min_df=1) -> Tuple[List, np.ndarray]:
@@ -94,7 +94,7 @@ def create_bag_of_words(corpus: List[str], ngram_size=1, min_df=1) -> Tuple[List
 
 # Helper functions for summarizing bag_of_words and tfidf matices.
 
-# In[ ]:
+# In[3]:
 
 
 def word_is_nterm(word: str):
@@ -153,7 +153,7 @@ def max_tfidf_all_words_in_each_document(ids_list: List, tfidf_matrix: np.ndarra
 # Helper function for extracting sub-matrix from a given matrix (bag_of_words and tfidf).
 # 
 
-# In[ ]:
+# In[4]:
 
 
 def filter_matrix(ids_list: List, word_list: List, any_matrix: np.ndarray, filter_rows: List, filter_columns: List) -> Tuple[List, List, np.ndarray]:
@@ -209,7 +209,7 @@ def filter_matrix_columns(word_list: List, any_matrix: np.ndarray, filter_rows: 
 # 
 # 
 
-# In[12]:
+# In[5]:
 
 
 def create_tfidf(corpus: List[str], ngram_size=1, min_df=1) -> Tuple[List, np.ndarray]:
@@ -234,17 +234,12 @@ def create_tfidf(corpus: List[str], ngram_size=1, min_df=1) -> Tuple[List, np.nd
 
 
 
-# In[ ]:
+# Cluster the input matrix (according to cluster_rows) into output matrix, where the number of rows is the number of clusters.
 
-
-
-
-
-# In[ ]:
+# In[6]:
 
 
 def cluster_matrix(ids_list: List, word_list: List, any_matrix: np.ndarray, cluster_rows: List) -> np.ndarray:
-    # cluster the input matrix (according to cluster_rows) into output matrix, where the number of rows is the number of clusters 
     """
     Construct an agregate sub-matrix from the given matrix based on cluster_rows.
     cluster_rows contains integer numbers representing index of a cluster of the corresponding document.
@@ -280,7 +275,7 @@ def cluster_matrix(ids_list: List, word_list: List, any_matrix: np.ndarray, clus
 # 
 # 
 
-# In[13]:
+# In[7]:
 
 
 def create_word_embeddings(tokens_list: List[List[str]], embedding_method: str = 'word2vec') -> Tuple[BaseEstimator, np.ndarray]:
@@ -307,51 +302,6 @@ def create_word_embeddings(tokens_list: List[List[str]], embedding_method: str =
         document_embeddings[i] = token_embeddings.mean(axis=0)
 
     return model, document_embeddings
-
-
-# In[16]:
-
-
-from collections import defaultdict
-
-
-# This function create_bag_of_words takes a list of preprocessed text documents as input and creates a bag of words representation of the corpus without using the scikit-learn or scipy packages. The function first defines a helper function tokenize_and_count that takes a text document as input, tokenizes it by splitting on whitespace, and counts the occurrences of each token using a defaultdict.
-# 
-# The function then initializes an empty dictionary word_to_index to map words to their index, and an empty list bag_of_words_list to store the bag of words representation of each document. For each document in the input corpus, the function tokenizes and counts the occurrences of words using the tokenize_and_count helper function, and appends the resulting dictionary to the bag_of_words_list.
-# 
-# For each unique word in the word count dictionary, the function checks if it is already in the word_to_index dictionary. If not, the word is added to the dictionary with a new index, which is the current length of the dictionary.
-# 
-# Finally, the function returns a tuple containing the word_to_index dictionary and the bag_of_words_list.
-
-# In[17]:
-
-
-def create_bag_of_words_deprecated(corpus: List[str]) -> Tuple[Dict[str, int], List[Dict[str, int]]]:
-    """
-    Create a bag of words representation of a text corpus without using scikit-learn or scipy.
-    :param corpus: List[str], a list of preprocessed text documents
-    :return: Tuple[Dict[str, int], List[Dict[str, int]]], a dictionary mapping words to their index, 
-             and a list of dictionaries representing the bag of words for each document
-    """
-    def tokenize_and_count(document: str) -> Dict[str, int]:
-        tokens = document.split()
-        word_count = defaultdict(int)
-        for token in tokens:
-            word_count[token] += 1
-        return word_count
-
-    word_to_index = {}
-    bag_of_words_list = []
-
-    for document in corpus:
-        word_count = tokenize_and_count(document)
-        bag_of_words_list.append(word_count)
-
-        for word in word_count:
-            if word not in word_to_index:
-                word_to_index[word] = len(word_to_index)
-
-    return word_to_index, bag_of_words_list
 
 
 # In[ ]:

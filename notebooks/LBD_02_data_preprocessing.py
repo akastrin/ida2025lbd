@@ -14,7 +14,7 @@
 # [2] Antić, Z. (2021): Python Natural Language Processing Cookbook: Over 50 recipes to understand, analyze, and generate text for implementing language processing tasks, Pakt Publishing.
 # 
 
-# In[ ]:
+# In[1]:
 
 
 from typing import List, Dict
@@ -35,7 +35,7 @@ nlp2 = spacy.load("en_core_web_md")
 import logging
 
 
-# In[ ]:
+# In[2]:
 
 
 # Define string qualifiers that are used in the following functions
@@ -47,9 +47,15 @@ strDocumentKey = 'document'
 strPreprocessedKey = 'preprocessed'
 strPreprocessedDefaultValue = ['NA']
 
+
+# A function for displaying longer strings truncated to a specified length with added ellipsis (...) if it's longer than the specified length.
+
+# In[5]:
+
+
 def truncate_with_ellipsis(string: str, length: int) -> str:
     """
-    Truncate a string to a specified length and add ellipsis (...) if it's longer than the length.
+    Truncate a string to a specified length and add ellipsis (...) if it's longer than the specified length.
     
     Parameters:
     - string (str): the string to be truncated
@@ -62,12 +68,13 @@ def truncate_with_ellipsis(string: str, length: int) -> str:
         return string[:length - 3] + '...'  # Adjust for the length of the ellipsis
     return string
 
+
 # The fuction *construct_dict_from_list* is designed to process a list of documents *docs_list* and transform them into a structured dictionary format. Each document in the list is expected to potentially have an identifier *id:* and a domain *!domain* at the beginning, followed by the main content of the document. The procedure aims to extract these components and store them in a structured manner within a dictionary. The structure of the returned dictionary is the following:
 # <code>
 # {pubmed_id: {domain: 'str', document: 'str', preprocessed: 'str'}, ...
 # }</code>
 
-# In[ ]:
+# In[6]:
 
 
 def construct_dict_from_list(docs_list: List[str]) -> Dict[str, Dict]:
@@ -113,7 +120,7 @@ def construct_dict_from_list(docs_list: List[str]) -> Dict[str, Dict]:
 
 # The function *construct_dict_from_lists* constructs a document dictionary from lists of ids, domains and documents (original and preprocessed). All the input lists are of the same length; the order of the items in the input lists are ordered correspondingly to the list of documents *docs_list*.
 
-# In[ ]:
+# In[7]:
 
 
 # Construct a document dictionary from lists of ids, domains and documents (original and preprocessed)
@@ -139,7 +146,7 @@ def construct_dict_from_lists(ids_list: List[str], domains_list: List[str], docs
 
 # The foolowing functions are used to extract list (*ids_list*, *domain_names_list*, *documents_list* and *preprocessed_documents_list*) from the dictionary *docs_dict*. 
 
-# In[ ]:
+# In[11]:
 
 
 def extract_ids_list(docs_dict: Dict[str, Dict]) -> List[str]:
@@ -181,7 +188,7 @@ def extract_preprocessed_documents_list(docs_dict: Dict[str, Dict]) -> List[str]
 
 # Helper functions for saving lists and dictionaries to text files for further documentation and inspection.
 
-# In[ ]:
+# In[12]:
 
 
 def save_list_to_file(my_list: List, filename: str):
@@ -220,119 +227,9 @@ def get_index_list_of_dict1_keys(dict1: Dict, list2: List):
     return ind_list
 
 
-# This function tokenize takes an input text string and uses the Natural Language Toolkit (NLTK) library to tokenize the text into words. 
-# The function first ensures that the required NLTK data for the punkt tokenizer is downloaded using the nltk.download() method 
-# with the quiet=True argument to suppress download messages.
-# 
-# Then, the function uses the nltk.word_tokenize() method to tokenize the input text into words, creating a list of word tokens. 
-# Finally, the function returns the list of tokens.
-
-# In[ ]:
-
-
-def tokenize_obsolete(text: str) -> List[str]:
-    """
-    Tokenize the input text into a list of words.
-    :param text: str, the input text
-    :return: List[str], a list of words (tokens)
-    """
-    # Ensure the NLTK data is downloaded
-    nltk.download('punkt', quiet=True)
-    
-    # Tokenize the text using NLTK's word_tokenize function
-    tokens = nltk.word_tokenize(text)
-    
-    return tokens
-
-
-# This function remove_stopwords takes a list of word tokens as input and uses the Natural Language Toolkit (NLTK) library 
-# to remove stop words from the list. The function first ensures that the required NLTK data for the stop words is downloaded 
-# using the nltk.download() method with the quiet=True argument to suppress download messages.
-# 
-# Then, the function loads the list of English stop words from NLTK using the nltk.corpus.stopwords.words('english') method 
-# and converts it into a set for faster lookups. The function iterates through the input list of tokens, 
-# keeping only the tokens that are not in the stop words set. The function returns the filtered list of tokens with stop words removed.
-
-# In[ ]:
-
-
-def remove_stopwords_obsolete(tokens: List[str]) -> List[str]:
-    """
-    Remove stop words from a list of tokens.
-    :param tokens: List[str], a list of word tokens
-    :return: List[str], a list of tokens with stop words removed
-    """
-    # Ensure the NLTK data is downloaded
-    nltk.download('stopwords', quiet=True)
-    
-    # Load the list of English stop words from NLTK
-    stop_words = set(nltk.corpus.stopwords.words('english'))
-
-    # Remove stop words from the list of tokens
-    filtered_tokens = [token for token in tokens if token.lower() not in stop_words]
-    
-    return filtered_tokens
-
-
-# This function stem takes a list of word tokens as input and uses the Natural Language Toolkit (NLTK) library to apply 
-# stemming to the tokens. The function creates an instance of the nltk.stem.PorterStemmer, 
-# which is an implementation of the widely-used Porter stemming algorithm.
-# 
-# The function then iterates through the input list of tokens, applying the stemming algorithm to each token using the stemmer.stem() method. 
-# The function returns the stemmed list of tokens.
-
-# In[ ]:
-
-
-def stem_obsolete(tokens: List[str]) -> List[str]:
-    """
-    Apply stemming to a list of tokens.
-    :param tokens: List[str], a list of word tokens
-    :return: List[str], a list of stemmed tokens
-    """
-    # Create an instance of the PorterStemmer from NLTK
-    stemmer = nltk.stem.PorterStemmer()
-
-    # Apply stemming to each token in the list
-    stemmed_tokens = [stemmer.stem(token) for token in tokens]
-    
-    return stemmed_tokens
-
-
-# This function lemmatize takes a list of word tokens as input and uses the Natural Language Toolkit (NLTK) library 
-# to apply lemmatization to the tokens. The function first ensures that the required NLTK data for the WordNet lemmatizer 
-# is downloaded using the nltk.download() method with the quiet=True argument to suppress download messages.
-# 
-# The function then creates an instance of the nltk.stem.WordNetLemmatizer, which is an implementation of 
-# the WordNet-based lemmatization algorithm. The function iterates through the input list of tokens, 
-# applying the lemmatization algorithm to each token using the lemmatizer.lemmatize() method. 
-# The function returns the lemmatized list of tokens.
-# 
-
-# In[ ]:
-
-
-def lemmatize_obsolete(tokens: List[str]) -> List[str]:
-    """
-    Apply lemmatization to a list of tokens.
-    :param tokens: List[str], a list of word tokens
-    :return: List[str], a list of lemmatized tokens
-    """
-    # Ensure the NLTK data is downloaded
-    nltk.download('wordnet', quiet=True)
-    
-    # Create an instance of the WordNetLemmatizer from NLTK
-    lemmatizer = nltk.stem.WordNetLemmatizer()
-
-    # Apply lemmatization to each token in the list
-    lemmatized_tokens = [lemmatizer.lemmatize(token) for token in tokens]
-    
-    return lemmatized_tokens
-
-
 # This function cleans text.
 
-# In[ ]:
+# In[17]:
 
 
 def do_clean_text(corpus, keep_list, remove_list):
@@ -363,22 +260,7 @@ def do_clean_text(corpus, keep_list, remove_list):
     return cleaned_corpus
 
 
-# In[ ]:
-
-
-testing = False
-if testing:
-    corpus = ["This is a sample document! It contains words, numbers like 123, and symbols like @#$.",
-              "Another document with different content, including special characters: &, %, and more!"
-             ]
-    keep_list = ['123', 'a', '@#$'] # !!! ???
-    remove_list = ['document']
-
-    cleaned_corpus = do_clean_text(corpus, keep_list, remove_list)
-    print(cleaned_corpus)
-
-
-# In[ ]:
+# In[19]:
 
 
 # This function is partially based on [1]
@@ -391,7 +273,7 @@ def do_remove_stopwords(corpus):
     return corpus
 
 
-# In[ ]:
+# In[20]:
 
 
 # This function is partially based on [1]
@@ -401,7 +283,7 @@ def do_lemmatize(corpus):
     return corpus
 
 
-# In[ ]:
+# In[21]:
 
 
 # This function is partially based on [1]
@@ -415,7 +297,7 @@ def do_stem(corpus, stem_type = None):
     return corpus
 
 
-# In[ ]:
+# In[22]:
 
 
 def do_keep_only_longer_or_equal_length_words(corpus, min_length):
@@ -430,7 +312,7 @@ def do_keep_only_longer_or_equal_length_words(corpus, min_length):
     return modified_corpus
 
 
-# In[ ]:
+# In[23]:
 
 
 def do_remove_non_nouns(corpus, keep_list):
@@ -449,7 +331,7 @@ def do_remove_non_nouns(corpus, keep_list):
     return modified_corpus
 
 
-# In[ ]:
+# In[24]:
 
 
 def do_remove_non_mesh(corpus, mesh_word_list):
@@ -463,7 +345,7 @@ def do_remove_non_mesh(corpus, mesh_word_list):
     return modified_corpus
 
 
-# In[ ]:
+# In[25]:
 
 
 # This function is partially based on [1]
@@ -524,43 +406,11 @@ def preprocess(corpus, keep_list, remove_list, mesh_word_list, \
     return corpus
 
 
-# In[ ]:
-
-
-testing = False
-if testing:
-    corpus = [
-    "This is a sample document containing various words like insulin.",
-    "Another example document with different terms, including some medical terms like diabetes."
-    ]
-
-    keep_list = ['sample', 'example']
-    remove_list = ['containing', 'including']
-    mesh_word_list = ['diabetes', 'insulin']
-
-    preprocessed_corpus = preprocess(
-    corpus,
-    keep_list=keep_list,
-    remove_list=remove_list,
-    mesh_word_list=mesh_word_list,
-    cleaning=True,
-    remove_stopwords=True,
-    lemmatization=True,
-    min_word_length=2,
-    keep_only_nouns=False,
-    keep_only_mesh=False,
-    stemming=False,
-    stem_type='snowball'
-    )
-
-    print(preprocessed_corpus)
-
-
 # The *preprocess_docs_dict* function performs various pre-processing tasks on a dictionary of documents. The function first extracts the IDs, domain names, and actual documents from the docs_dict. It then preprocesses the text by potentially cleaning, stemming, lemmatizing, and removing stopwords based on the provided boolean flags. The processed corpus is then combined back with the IDs and domain names to form a new dictionary that is returned by the function.
 # 
 # Note: One should either use stemming or lemmatization, but not both, as there is no added benefit to using them together.
 
-# In[ ]:
+# In[27]:
 
 
 def preprocess_docs_dict(docs_dict, keep_list, remove_list, mesh_word_list, \

@@ -244,9 +244,3 @@ def find_most_similar_documents(similarity_matrix: np.ndarray, document_index: i
 
 
 
-
-# In[ ]:
-
-
-
-
