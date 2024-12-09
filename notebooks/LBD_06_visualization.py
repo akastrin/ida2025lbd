@@ -262,7 +262,7 @@ def plot_bow_tfidf_matrix(title: str, any_matrix: np.ndarray, ids: List, words: 
 # In[7]:
 
 
-def visualize_tfidf_pca_interactive(names, domains_list, tfidf_matrix, transpose = False, color_schema = 0):
+def visualize_tfidf_pca_interactive(names, selected_names, domains_list, tfidf_matrix, transpose = False, color_schema = 0):
     tfidf_matrix_transposed = np.squeeze(np.asarray(tfidf_matrix))
     if transpose:
         tfidf_matrix_transposed = tfidf_matrix_transposed.T
@@ -334,6 +334,20 @@ def visualize_tfidf_pca_interactive(names, domains_list, tfidf_matrix, transpose
                                  hovertext='Centroid of ' + unique_clusters[cluster_num],
                                  text=unique_clusters[cluster_num],
                                  textposition='bottom center'))
+
+    if selected_names == []:
+        special_cluster_docs_indices = []
+    else:
+        special_cluster_docs_indices = [i for i, label in enumerate(names) if label in selected_names]
+
+    if selected_names != []:
+        fig.add_trace(go.Scatter(x=pca_result[special_cluster_docs_indices, 0], y=pca_result[special_cluster_docs_indices, 1], 
+                                    mode='markers+text',
+                                    marker=dict(size=10, color='green', symbol='circle', line=dict(color='rgba(0, 0, 0, 1.0)', width=1)), 
+                                    name='selected',
+                                    hovertext=[names[i] for i in special_cluster_docs_indices], # this text is shown on hover
+                                    text='', 
+                                    textposition='bottom center'))
 
     # Plot the centroid of the whole set of documents
     fig.add_trace(go.Scatter(x=[centroid[0]], y=[centroid[1]],
