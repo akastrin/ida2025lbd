@@ -5,7 +5,7 @@
 # 
 # This module implements various text mining algorithms like topic modeling, sentiment analysis, and clustering.
 
-# In[2]:
+# In[1]:
 
 
 import numpy as np
@@ -31,7 +31,7 @@ from typing import List, Tuple, Any
 # 
 # 
 
-# In[ ]:
+# In[2]:
 
 
 def perform_topic_modeling(matrix: csr_matrix, n_topics: int) -> Tuple[BaseEstimator, np.ndarray]:
@@ -72,7 +72,7 @@ def perform_topic_modeling(matrix: csr_matrix, n_topics: int) -> Tuple[BaseEstim
 # 
 # 
 
-# In[ ]:
+# In[3]:
 
 
 def perform_sentiment_analysis(tokens_list: List[List[str]]) -> List[float]:
@@ -117,25 +117,31 @@ def perform_sentiment_analysis(tokens_list: List[List[str]]) -> List[float]:
 # 
 # 
 
+# In[4]:
+
+
+def perform_clustering(tfidf_matrix: np.ndarray, n_clusters: int) -> List[str]:
+    """
+    Perform clustering on a document-term matrix using K-Means.
+    :param matrix: np.ndarray, the document-term matrix to perform clustering on
+    :param n_clusters: int, the number of clusters to create
+    :return: List[str], the KMeans fitted clustering model and the cluster labels for each document
+    """
+    tfidf_array = np.asarray(tfidf_matrix)
+
+    # Create an instance of the KMeans class from scikit-learn and fit the KMeans model to the document-term matrix
+    kmeans = KMeans(n_clusters=n_clusters, random_state=321).fit(tfidf_array)
+
+    # Obtain the cluster labels for each document
+    cluster_assignments = list(np.asarray(kmeans.labels_))
+    cluster_assignments = [str(i) for i in cluster_assignments]
+
+    # Return the KMeans model and the cluster labels as a tuple
+    return cluster_assignments
+
+
 # In[ ]:
 
 
-def perform_clustering(matrix: csr_matrix, n_clusters: int) -> Tuple[BaseEstimator, np.ndarray]:
-    """
-    Perform clustering on a document-term matrix using K-Means.
-    :param matrix: csr_matrix, the document-term matrix to perform clustering on
-    :param n_clusters: int, the number of clusters to create
-    :return: Tuple[BaseEstimator, np.ndarray], the KMeans fitted clustering model and the cluster labels for each document
-    """
-    # Create an instance of the KMeans class from scikit-learn
-    kmeans = KMeans(n_clusters=n_clusters, random_state=42)
 
-    # Fit the KMeans model to the document-term matrix
-    kmeans.fit(matrix)
-
-    # Obtain the cluster labels for each document
-    cluster_labels = kmeans.labels_
-
-    # Return the KMeans model and the cluster labels as a tuple
-    return kmeans, cluster_labels
 
