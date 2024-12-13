@@ -105,19 +105,16 @@ def perform_sentiment_analysis(tokens_list: List[List[str]]) -> List[float]:
 
 
 
-# This function perform_clustering takes a document-term matrix in the Compressed Sparse Row (CSR) format and 
-# an integer specifying the number of clusters to create as input, and uses the scikit-learn library 
+# This function perform_clustering takes a TF-IDF matrix and uses the scikit-learn library 
 # to perform clustering using the K-Means algorithm. The function first creates an instance 
-# of the sklearn.cluster.KMeans class with the specified number of clusters and a fixed random state of 42 for reproducibility.
+# of the sklearn.cluster.KMeans class with the specified number of clusters and a fixed random state of 321 for reproducibility.
 # 
 # The function then fits the K-Means model to the input document-term matrix using the kmeans.fit() method. 
 # After fitting the model, the function obtains the cluster labels for each document using the kmeans.labels_ attribute.
 # 
-# Finally, the function returns a tuple containing the K-Means model and the cluster labels as a NumPy array.
-# 
-# 
+# Finally, the function returns the list of cluster labels.
 
-# In[4]:
+# In[ ]:
 
 
 def perform_clustering(tfidf_matrix: np.ndarray, n_clusters: int) -> List[str]:
@@ -127,16 +124,17 @@ def perform_clustering(tfidf_matrix: np.ndarray, n_clusters: int) -> List[str]:
     :param n_clusters: int, the number of clusters to create
     :return: List[str], the KMeans fitted clustering model and the cluster labels for each document
     """
+    # Convert the input TF-IDF matrix into a numpy array to make it compatible with the KMeans algorithm
     tfidf_array = np.asarray(tfidf_matrix)
 
     # Create an instance of the KMeans class from scikit-learn and fit the KMeans model to the document-term matrix
     kmeans = KMeans(n_clusters=n_clusters, random_state=321).fit(tfidf_array)
 
-    # Obtain the cluster labels for each document
+    # Obtain the cluster labels for each document; labels are in string format
     cluster_assignments = list(np.asarray(kmeans.labels_))
     cluster_assignments = [str(i) for i in cluster_assignments]
 
-    # Return the KMeans model and the cluster labels as a tuple
+    # Return the cluster labels
     return cluster_assignments
 
 
