@@ -28,7 +28,3 @@ This repository provides a collection of Python notebooks that implement all the
 ## Acknowledgements
 
 The authors acknowledge the financial support from the Slovenian Research and Innovation Agency through the Knowledge technologies (No. P2-0103), and Methodology for data analysis in medical sciences (No. P3-0154) core research projects, as well as Embeddings-based techniques for media monitoring applications (No. L2-50070) research project. The young researcher grant (No. PR-12394) supported the work of Boshko Koloski.
-
-## License
-
-[OSL 3.0](https://choosealicense.com/licenses/osl-3.0/)
