@@ -118,7 +118,7 @@ def sum_count_each_word_in_all_documents(word_list: List, any_matrix: np.ndarray
         words_dict[word] = count
     return words_dict
 
-def max_tfidf_each_word_in_all_documents(word_list: List, tfidf_matrix: np.ndarray) -> Dict[str, int]:
+def max_tfidf_each_word_in_all_documents(word_list: List, tfidf_matrix: np.ndarray) -> Dict[str, float]:
     # max tfidf of each word in all documents; max element found in each matrix column
     word_counts = (tfidf_matrix).max(axis=0)
     if type(word_counts) == np.matrix:
@@ -138,7 +138,7 @@ def sum_count_all_words_in_each_document(ids_list: List, any_matrix: np.ndarray)
         words_dict[id] = count
     return words_dict
 
-def max_tfidf_all_words_in_each_document(ids_list: List, tfidf_matrix: np.ndarray) -> Dict[str, int]:
+def max_tfidf_all_words_in_each_document(ids_list: List, tfidf_matrix: np.ndarray) -> Dict[str, float]:
     # max tfidf of words in each document; max element found in each matrix row
     word_counts = (tfidf_matrix).max(axis=1)
     if type(word_counts) == np.matrix:
