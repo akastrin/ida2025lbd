@@ -88,7 +88,7 @@ def load_data_from_file(file_path: str) -> List[str]:
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"The file '{file_path}' does not exist.")
         
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding='ascii', errors='ignore') as file:
         data = file.readlines()
 
     logging.info(f'Loaded {len(data)} lines from "{file_path}".')
