@@ -1,0 +1,52 @@
+name: Docker CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    name: Build and Test Docker Compose
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build and test Docker Compose services
+        run: |
+          docker compose -f docker-compose.yml up --build --detach
+          docker compose ps
+
+      - name: Run integration tests
+        run: |
+          # Add your integration test commands here
+          echo "Running tests..."
+
+      - name: Tear down Docker Compose
+        if: always()
+        run: docker compose -f docker-compose.yml down
+
+  deploy:
+    name: Build Docker Image Only
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker image
+        run: |
+          docker build .
