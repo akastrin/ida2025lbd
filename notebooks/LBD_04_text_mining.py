@@ -12,6 +12,7 @@ import numpy as np
 from sklearn.decomposition import LatentDirichletAllocation
 from sklearn.cluster import KMeans
 from sklearn.base import BaseEstimator
+from sklearn.metrics.pairwise import cosine_distances
 from scipy.sparse import csr_matrix
 import nltk
 from nltk.sentiment import SentimentIntensityAnalyzer
@@ -140,6 +141,77 @@ def perform_clustering(tfidf_matrix: np.ndarray, n_clusters: int) -> List[str]:
 
 # In[ ]:
 
+# The next function *find_document_outliers* prepares a list of *n_outliers* outlier documents based on TF-IDF matrix.
 
+def find_document_outliers(tfidf_matrix, n_outliers=1):
+    """
+    Identify outliers based on cosine distance from the centroid of all document vectors.
+    
+    Parameters:
+    - tfidf_matrix: 2D numpy array of shape (n_docs, n_features), the TF-IDF matrix.
+    - n_outliers: number of documents to consider as outliers.
+    
+    Returns:
+    - outlier_indices: List of indices of the documents identified as outliers.
+    """
+    
+    # Step 1: Compute the centroid of the TF-IDF vectors
+    centroid = np.mean(tfidf_matrix, axis=0)
+    # print(centroid)
+    
+    # Step 2: Compute cosine distances between each document vector and the centroid
+    # Since we are computing cosine distance from the centroid, reshape centroid to (1, -1)
+    distances = cosine_distances(tfidf_matrix, centroid.reshape(1, -1)).flatten()
+    # print(distances)
+    
+    # Optional step 3: Determine the number of outliers to select (n_outliers is the parameter of the function)
+    # n_docs = tfidf_matrix.shape[0]
+    # n_outliers = int(np.ceil(outlier_fraction * n_docs))
+    
+    # Step 4: Find the indices of the top N documents with the highest distances
+    if n_outliers < 0:
+        outlier_indices = np.argsort(distances)[-n_outliers:]
+    else:
+        outlier_indices = np.argsort(distances)[-n_outliers:]
+    
+    return outlier_indices
 
+# Similarly to the previous function, which finds a set of outlier documents, the nex function *find_word_outliers* finds *n_outliers* words from the *vocabulary*.  
+
+def find_word_outliers(tfidf_matrix, vocabulary, n_outliers=1):
+    """
+    Identify outlier words based on cosine distance from the centroid of all word vectors.
+    
+    Parameters:
+    - tfidf_matrix: 2D numpy array of shape (n_docs, n_features), the TF-IDF matrix.
+    - vocabulary: List of words corresponding to the columns (features) in the TF-IDF matrix.
+    - n_outliers: number of words to consider as outliers.
+    
+    Returns:
+    - outlier_words: List of words identified as outliers.
+    """
+    
+    # Step 1: Compute the centroid of the word vectors (columns)
+    centroid = np.mean(tfidf_matrix, axis=1)  # Centroid of columns (words)
+    # print(centroid)
+    
+    # Step 2: Compute cosine distances between each word vector and the centroid
+    # Since we are calculating cosine distance for words (columns), we transpose the matrix
+    distances = cosine_distances(tfidf_matrix.T, centroid.reshape(1, -1)).flatten()
+    # print(distances)
+    
+    # Optional step 3: Determine the number of outlier words to select (n_outliers is the parameter of the function)
+    # n_words = tfidf_matrix.shape[1]
+    # n_outliers = int(np.ceil(outlier_fraction * n_words))
+    
+    # Step 4: Find the indices of the top N words with the highest distances
+    if n_outliers < 0:
+        outlier_indices = np.argsort(distances)[:-n_outliers]
+    else:
+        outlier_indices = np.argsort(distances)[-n_outliers:]
+    
+    # Step 5: Retrieve the corresponding outlier words using the vocabulary
+    outlier_words = [vocabulary[i] for i in outlier_indices]
+    
+    return outlier_words
 
