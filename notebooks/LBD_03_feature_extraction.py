@@ -81,7 +81,7 @@ def create_bag_of_words(corpus: List[str], ngram_size=1, min_df=1, max_features=
      :return: Tuple[List, Matrix], the List of words and the bow matrix
     """
     # Create an instance of the CountVectorizer from scikit-learn
-    vectorizer = CountVectorizer(ngram_range=(1, ngram_size), min_df=min_df, max_features=max_features)
+    vectorizer = CountVectorizer(ngram_range=(1, ngram_size), min_df=min_df, max_features=max_features, dtype=np.int32)
     # vectorizer = CountVectorizer(ngram_range=(1, ngram_size), min_df=min_df, stop_words='english')
 
     # Fit the vectorizer to the corpus and transform the corpus into a bag of words matrix
@@ -222,7 +222,7 @@ def create_tfidf(corpus: List[str], ngram_size=1, min_df=1, max_features=None) -
     :return: TTuple[List, Matrix], the List of words and the tf-idf matrix
     """
     # Create an instance of the TfidfVectorizer from scikit-learn
-    vectorizer = TfidfVectorizer(ngram_range=(1, ngram_size), min_df=min_df, max_features=max_features)
+    vectorizer = TfidfVectorizer(ngram_range=(1, ngram_size), min_df=min_df, max_features=max_features, dtype=np.float32)
     # vectorizer = TfidfVectorizer(ngram_range=(1, ngram_size), min_df=min_df, stop_words='english')
 
     # Fit the vectorizer to the corpus and transform the corpus into a TF-IDF matrix
