@@ -71,7 +71,7 @@ from typing import List, Tuple, Dict
 # In[2]:
 
 
-def create_bag_of_words(corpus: List[str], ngram_size=1, min_df=1) -> Tuple[List, np.ndarray]:
+def create_bag_of_words(corpus: List[str], ngram_size=1, min_df=1, max_features=None) -> Tuple[List, np.ndarray]:
     """
     Create a bag of words representation of a text corpus.
     :param corpus: List[str], a list of preprocessed text documents
@@ -81,7 +81,7 @@ def create_bag_of_words(corpus: List[str], ngram_size=1, min_df=1) -> Tuple[List
      :return: Tuple[List, Matrix], the List of words and the bow matrix
     """
     # Create an instance of the CountVectorizer from scikit-learn
-    vectorizer = CountVectorizer(ngram_range=(1, ngram_size), min_df=min_df)
+    vectorizer = CountVectorizer(ngram_range=(1, ngram_size), min_df=min_df, max_features=max_features)
     # vectorizer = CountVectorizer(ngram_range=(1, ngram_size), min_df=min_df, stop_words='english')
 
     # Fit the vectorizer to the corpus and transform the corpus into a bag of words matrix
@@ -212,7 +212,7 @@ def filter_matrix_columns(word_list: List, any_matrix: np.ndarray, filter_rows: 
 # In[5]:
 
 
-def create_tfidf(corpus: List[str], ngram_size=1, min_df=1) -> Tuple[List, np.ndarray]:
+def create_tfidf(corpus: List[str], ngram_size=1, min_df=1, max_features=None) -> Tuple[List, np.ndarray]:
     """
     Create a TF-IDF representation of a text corpus.
     :param corpus: List[str], a list of preprocessed text documents
@@ -222,7 +222,7 @@ def create_tfidf(corpus: List[str], ngram_size=1, min_df=1) -> Tuple[List, np.nd
     :return: TTuple[List, Matrix], the List of words and the tf-idf matrix
     """
     # Create an instance of the TfidfVectorizer from scikit-learn
-    vectorizer = TfidfVectorizer(ngram_range=(1, ngram_size), min_df=min_df)
+    vectorizer = TfidfVectorizer(ngram_range=(1, ngram_size), min_df=min_df, max_features=max_features)
     # vectorizer = TfidfVectorizer(ngram_range=(1, ngram_size), min_df=min_df, stop_words='english')
 
     # Fit the vectorizer to the corpus and transform the corpus into a TF-IDF matrix
